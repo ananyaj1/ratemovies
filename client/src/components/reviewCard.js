@@ -12,8 +12,9 @@ export default function ReviewCard({review, deleteReview}) {
             style={{
                 width: 300,
               }}
+              cover={<img alt="notfound" src={review.image}/>}
               actions={[
-                <DeleteOutlined/>,
+                <div onClick={deleteReview}><DeleteOutlined/></div>,
                 <EditOutlined />
               ]}>
                 <Meta 
