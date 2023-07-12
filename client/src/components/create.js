@@ -25,6 +25,9 @@ export default function Create() {
         }
     }
 
+    useEffect(() => {
+        console.log(title);
+    });
     const onDateChange = (date, dateString) => {
         var now = moment();
         if(date > now) {
@@ -150,7 +153,7 @@ export default function Create() {
                 validateStatus={dateStatus}
                 rules={[{ required: true, message: 'Please select a proper date.' }]}
                 help="Don't choose a date past today!">
-                    <DatePicker onChange={onDateChange}/>
+                    <DatePicker value={date} onChange={onDateChange}/>
                 </Form.Item>
 
                 <br/>
@@ -159,7 +162,7 @@ export default function Create() {
                 label="Movie Review"
                 name="review"
                 rules={[{ required: true, message: 'Please write a review!' }]}>
-                    <TextArea rows={10} onChange={(e) => setReviewText(e.target.value)}/>
+                    <TextArea rows={10} value={reviewText} onChange={(e) => setReviewText(e.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
