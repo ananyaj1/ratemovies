@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Result, Row, Button, DatePicker, Rate, Radio, Form, Input, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -71,7 +71,7 @@ export default function Create() {
             return;
         }
         data.image = imageUrl;
-        
+
         //debugging
         //console.log(data);
         

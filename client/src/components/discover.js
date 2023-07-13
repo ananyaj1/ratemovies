@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
 import { Form, Input, Button } from 'antd';
 
 export default function Discover() {

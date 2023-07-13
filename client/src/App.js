@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
 import { NavLink, Routes, Route } from "react-router-dom";
-import {Layout, Menu, theme } from 'antd';
+import {Layout, Menu } from 'antd';
 import {EditOutlined, EyeOutlined, SearchOutlined} from '@ant-design/icons';
 import Create from "./components/create";
 import View from "./components/view";
 import Discover from "./components/discover";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 const items = [
     {

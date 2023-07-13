@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+
 import { Row, Rate, Card } from 'antd';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import pp from '../images/pp.jpeg';
