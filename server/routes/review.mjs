@@ -1,44 +1,62 @@
 import express from "express";
-import db from "../db/conn.mjs";
+import Review from "../db/schema.mjs";
 import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
 // get all reviews
 router.get("/", async (req, res) => {
-  let collection = await db.collection("reviews");
-  let results = await collection.find({}).toArray();
-  res.status(200).json(results);
+  try {
+    const reviews = await Review.find();
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({error: error.message});
+  }
 });
 
 // get single review by id
 router.get("/:id", async (req, res) => {
-  let collection = await db.collection("reviews");
-  let query = {_id: new ObjectId(req.params.id)};
-  let result = await collection.findOne(query);
-
-  if (!result) res.send("Not found").status(404);
-  else res.status(200).json(result);
+  try{
+    const reviewID = req.params.id;
+    Review.findById(reviewID, (err, review) => {
+      if(err) {
+        return res.status(500).json({error: 'Internal server error'});
+      }
+      if(!review) {
+        return res.status(404).json({error: 'Review not found'});
+      }
+      return res.status(200).json(review);
+    });
+  } catch (error){
+    res.status(500).json({error: error.message});
+  }
 });
 
 // create new review
 router.post("/", async (req, res) => {
-  let newReview = {
-    title: req.body.title,
-    movie_name: req.body.movie_name,
-    image: req.body.image,
-    rec: req.body.rec,
-    rating: req.body.rating,
-    date: req.body.date,
-    review_text: req.body.review_text
-  };
-  let collection = await db.collection("reviews");
-  let result = await collection.insertOne(newReview);
-  if (!result)res.send("coULD not find").status(404);
-  else res.send(result).status(204);
+  try {
+    const { title, movie_name, image, rec, rating, date, review_text } = req.body;
+    const newReview = new Review(
+      {
+        title,
+        movie_name,
+        image,
+        rec,
+        rating,
+        date,
+        review_text,
+      });
+    const savedReview = await newReview.save();
+    res.status(201).json(savedReview);
+
+  }
+  catch(error){
+    res.status(400).json({ message: error.message });
+  }
+  
 });
 
-// This section will help you update a record by id.
+// update review by id
 router.patch("/:id", async (req, res) => {
   const query = { _id: new ObjectId(req.params.id) };
   const updates =  {
@@ -59,14 +77,19 @@ router.patch("/:id", async (req, res) => {
   res.send(result).status(200);
 });
 
-// This section will help you delete a record
+// delete a review by id
 router.delete("/:id", async (req, res) => {
-  const query = { _id: new ObjectId(req.params.id) };
-
-  const collection = db.collection("reviews");
-  let result = await collection.deleteOne(query);
-
-  res.send(result).status(200);
+  const reviewID = req.params.id;
+  try{
+    const deletedReview = await Review.findByIdAndDelete(reviewID);
+    if(!deletedReview) {
+      return res.status(404).json({error: "Review not found"});
+    }
+    return res.status(200).json({message: "Deleted successfully"});
+  }
+  catch (error){
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 export default router;

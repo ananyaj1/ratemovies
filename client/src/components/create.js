@@ -25,9 +25,6 @@ export default function Create() {
         }
     }
 
-    useEffect(() => {
-        console.log(title);
-    });
     const onDateChange = (date, dateString) => {
         var now = moment();
         if(date > now) {
@@ -65,6 +62,11 @@ export default function Create() {
       };
     
     async function onSubmit (e) {
+        // date is a potential blank
+        if(date === "") {
+            window.alert("Make sure to choose a proper date.");
+            return;
+        } 
         const newReview = {
             title: title,
             movie_name: movieName,
@@ -74,16 +76,17 @@ export default function Create() {
             date: date,
             review_text: reviewText
         };
+        console.log(newReview);
         fetch("http://localhost:5050/review", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newReview)
         })
-        .catch(error => {
-            window.alert(error);
-            return;
-        })
+        .then((response) => {
+            if(!response.ok) {window.alert(response.statusText)}
+        }) 
         .then((data) => {
+            console.log(data);
             setTitle("");
             setMovieName("");
             setImageUrl([]);
@@ -151,7 +154,6 @@ export default function Create() {
                 label="Movie watched on"
                 name="date"
                 validateStatus={dateStatus}
-                rules={[{ required: true, message: 'Please select a proper date.' }]}
                 help="Don't choose a date past today!">
                     <DatePicker value={date} onChange={onDateChange}/>
                 </Form.Item>

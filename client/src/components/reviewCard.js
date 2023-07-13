@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Rate, Card } from 'antd';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
+import pp from '../images/pp.jpeg';
 const { Meta } = Card;
 
 export default function ReviewCard({review, deleteReview}) {
     const date = new Date(review.date);
+    const imgSrc = (review.image) ? review.image : pp;
     return (
         <div>
             <Card
@@ -12,7 +14,7 @@ export default function ReviewCard({review, deleteReview}) {
             style={{
                 width: 300,
               }}
-              cover={<img alt="notfound" src={review.image}/>}
+              cover={<img alt="notfound" src={imgSrc}/>}
               actions={[
                 <div onClick={deleteReview}><DeleteOutlined/></div>,
                 <EditOutlined />
