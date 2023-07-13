@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import ReviewCard from "./reviewCard";
 import { Row, Col } from "antd";
 
