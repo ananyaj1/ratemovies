@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Button, DatePicker, Rate, Radio, Form, Input, Upload } from 'antd';
+import { Result, Row, Button, DatePicker, Rate, Radio, Form, Input, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import moment from "moment";
 
 const {TextArea} = Input;
 export default function Create() {
-    const [title, setTitle] = useState("");
-    const [movieName, setMovieName] = useState("");
+    const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState("");
-    const [rec, setRec] = useState("wouldRec");
-    const [rating, setRating] = useState(0);
-    const [date, setDate] = useState("");
     const [dateStatus, setDateStatus] = useState("");
-    const [reviewText, setReviewText] = useState("");
+    const [submitted, setSubmitted] = useState(false);
     const navigate = useNavigate();
 
+    // functions for image uploading
     const props = {
         onRemove: () => {
             setImageUrl([]);
@@ -25,18 +22,23 @@ export default function Create() {
         }
     }
 
+    // initial values of form
+    const initialValues = {
+        rec: 'wouldRec', // Set the default value here
+    };
+
+    // checking if date is past today
     const onDateChange = (date, dateString) => {
         var now = moment();
         if(date > now) {
             setDateStatus("error");
-            setDate("");
         }
         else {
             setDateStatus("");
-            setDate(dateString);
         }
     }
-
+    
+    // change image to appropriate Base64 format for storage
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -60,125 +62,132 @@ export default function Create() {
         const base64 = await convertToBase64(file);
         setImageUrl(base64);
       };
-    
-    async function onSubmit (e) {
+
+    // on submit, send form data to post endpoint & reset the form  
+    async function onSubmit (data) {
         // date is a potential blank
-        if(date === "") {
-            window.alert("Make sure to choose a proper date.");
+        if(!data.date) {
+            window.alert('Please choose a proper date.');
             return;
-        } 
-        const newReview = {
-            title: title,
-            movie_name: movieName,
-            image: imageUrl,
-            rec: rec,
-            rating: rating,
-            date: date,
-            review_text: reviewText
-        };
-        console.log(newReview);
+        }
+        data.image = imageUrl;
+        
+        //debugging
+        //console.log(data);
+        
         fetch("http://localhost:5050/review", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newReview)
+            body: JSON.stringify(data)
         })
         .then((response) => {
             if(!response.ok) {window.alert(response.statusText)}
         }) 
-        .then((data) => {
-            console.log(data);
-            setTitle("");
-            setMovieName("");
-            setImageUrl([]);
-            setRec("wouldRec");
-            setRating(0);
-            setDate("");
-            setReviewText("");
-        })
+        form.resetFields();
+        setSubmitted(true);
     }
     return (
         <div className="createReview">
-            <Row justify={"center"}><h3 style={{offset: 12}}>New Review</h3></Row>
-            <Form
-            name="review"
-            labelCol={{span: 12}}
-            wrapperCol={{span: 12}}
-            style={{maxWidth: 1000}}
-            onFinish={onSubmit}
-            >
-                
-               <Form.Item
-                label="Title"
-                name="title"
-                rules={[{ required: true, message: 'Review title is required.' }]}
+            {(submitted) ? 
+            <Result 
+            status="success" 
+            title="Successfully wrote review!"
+            extra={[
+                <Button type="primary" key="console" onClick={() => setSubmitted(false)}>
+                  Write Another Review
+                </Button>,
+                <Button key="viewmore" onClick={() => navigate('/')}>
+                    View Other Reviews
+                </Button>,
+            ]}
+            />
+            : <div> 
+                <Row justify={"center"}><h3 style={{offset: 12}}>New Review</h3></Row>
+                <Form
+                form={form}
+                name="review"
+                labelCol={{span: 12}}
+                wrapperCol={{span: 12}}
+                style={{maxWidth: 1000}}
+                onFinish={onSubmit}
+                initialValues={initialValues}
                 >
-                  <Input value={title} onChange={e => setTitle(e.target.value)}/>  
-                </Form.Item> 
-
+                    
                 <Form.Item
-                    label="Movie Name"
-                    name="name"
-                    rules={[{ required: true, message: 'Movie name is required.' }]}
+                    label="Title"
+                    name="title"
+                    rules={[{ required: true, message: 'Review title is required.' }]}
                     >
-                    <Input value={movieName} onChange={e => setMovieName(e.target.value)}/>
-                </Form.Item>
+                    <Input/>  
+                    </Form.Item> 
 
-                <Form.Item label="Movie Still" valuePropName="fileList">
-                    <Upload {...props} listType="picture-card" maxCount={1} onChange={uploadChange}>
-                        <div>
-                        <PlusOutlined />
-                        <div style={{ marginTop: 8 }}>Upload</div>
-                        </div>
-                    </Upload>
-                </Form.Item>
+                    <Form.Item
+                        label="Movie Name"
+                        name="movie_name"
+                        rules={[{ required: true, message: 'Movie name is required.' }]}
+                        >
+                        <Input/>
+                    </Form.Item>
 
-                <Form.Item
+                    <Form.Item label="Movie Still" valuePropName="fileList">
+                        <Upload {...props} listType="picture-card" maxCount={1} onChange={uploadChange}>
+                            <div>
+                            <PlusOutlined />
+                            <div style={{ marginTop: 8 }}>Upload</div>
+                            </div>
+                        </Upload>
+                    </Form.Item>
+
+                    <Form.Item
+                        name='rec'
+                        wrapperCol={{
+                            offset: 12,
+                            span: 16,
+                        }}>
+                        <Radio.Group>
+                            <Radio.Button value="wouldRec"> Would Recommend </Radio.Button>
+                            <Radio.Button value="notRec"> Would Not Recommend </Radio.Button>
+                        </Radio.Group>
+                    </Form.Item>
+
+                    <Form.Item
+                    label="Rating"
+                    name="rating"
+                    rules={[{ required: true, message: 'Please rate this movie!' }]}>
+                        <Rate allowHalf />
+                    </Form.Item>
+
+                    <Form.Item
+                    label="Movie watched on"
+                    name="date"
+                    validateStatus={dateStatus}
+                    help="Don't choose a date past today!">
+                        <DatePicker onChange={onDateChange}/>
+                    </Form.Item>
+
+                    <br/>
+
+                    <Form.Item
+                    label="Movie Review"
+                    name="review_text"
+                    rules={[{ required: true, message: 'Please write a review!' }]}>
+                        <TextArea rows={10} />
+                    </Form.Item>
+
+                    <Form.Item
                     wrapperCol={{
                         offset: 12,
                         span: 16,
-                    }}>
-                    <Radio.Group value={rec} onChange={(e) => setRec(e.target.value)}>
-                        <Radio.Button value="wouldRec"> Would Recommend </Radio.Button>
-                        <Radio.Button value="notRec"> Would Not Recommend </Radio.Button>
-                    </Radio.Group>
-                </Form.Item>
-
-                <Form.Item
-                label="Rating"
-                name="rating"
-                rules={[{ required: true, message: 'Please rate this movie!' }]}>
-                    <Rate allowHalf value={rating} onChange={(value) => setRating(value)}/>
-                </Form.Item>
-
-                <Form.Item
-                label="Movie watched on"
-                name="date"
-                validateStatus={dateStatus}
-                help="Don't choose a date past today!">
-                    <DatePicker value={date} onChange={onDateChange}/>
-                </Form.Item>
-
-                <br/>
-
-                <Form.Item
-                label="Movie Review"
-                name="review"
-                rules={[{ required: true, message: 'Please write a review!' }]}>
-                    <TextArea rows={10} value={reviewText} onChange={(e) => setReviewText(e.target.value)}/>
-                </Form.Item>
-
-                <Form.Item
-                wrapperCol={{
-                    offset: 12,
-                    span: 16,
-                }}
-                >
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
-                
-            </Form>
+                    }}
+                    >
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </Form.Item>
+                    
+                </Form>
+             </div>}
+            
         </div>
     );
 }

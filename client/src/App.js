@@ -31,7 +31,8 @@ const items = [
 export default function App() {
     const [currPage, setCurrPage] = useState("create");
     const switchPage = e => {
-        console.log('click ', e);
+        // debugging
+        //console.log('click ', e);
         setCurrPage(e.key);
     }
     return(
