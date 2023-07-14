@@ -4,8 +4,11 @@ import React, { useState, useEffect } from "react";
 
 export default function Discover() {
     const [recFactor, setRecFactor] = useState(false);
+    const[rec, setRec] = useState(false);
     const [genreFactor, setGenreFactor] = useState(false);
+    const[genres, setGenres] = useState([]);
     const [ratingFactor, setRatingFactor] = useState(false);
+    const[rating, setRating] = useState(0);
     const options = [
         {
             value: 'Mystery',
@@ -30,6 +33,7 @@ export default function Discover() {
     ];
     const handleChange = (value) => {
         console.log(value);
+        setGenres(value);
     };
     const columns = [
         {
@@ -53,17 +57,18 @@ export default function Discover() {
             key: '1',
             rec: 
             <Space>
-                <Checkbox onChange={(e) => setRecFactor(e.target.checked)}/>
-                <Switch disabled={!recFactor}
+                <Checkbox onChange={(e) => {setRecFactor(e.target.checked); setRec(false);}}/>
+                <Switch disabled={!recFactor} checked={rec} onChange={() => setRec(!rec)}
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}/>
             </Space>,
             genre: 
             <Space>
-                <Checkbox onChange={(e) => setGenreFactor(e.target.checked)}/>
+                <Checkbox onChange={(e) => {setGenreFactor(e.target.checked); setGenres([]);}}/>
                 <Select
                     disabled={!genreFactor}
                     mode="multiple"
+                    value={genres}
                     allowClear
                     style={{
                     width: 400,
@@ -75,8 +80,8 @@ export default function Discover() {
             </Space>,
             rating: 
             <Space>
-                <Checkbox onChange={(e) => setRatingFactor(e.target.checked)}/>
-                <Rate disabled={!ratingFactor}/>
+                <Checkbox onChange={(e) => {setRatingFactor(e.target.checked); setRating(0);}}/>
+                <Rate disabled={!ratingFactor} value={rating} onChange={(e) => setRating(e)}/>
             </Space>
         }
     ]

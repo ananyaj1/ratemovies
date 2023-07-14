@@ -30,7 +30,7 @@ export default function ReviewCard({review, deleteReview}) {
                         <Tag color="red">Reviewer Doesn't Recommend</Tag>
                         }
                     </Row>
-                    <Row><Rate disabled defaultValue={review.rating}/></Row>
+                    <Row><Rate disabled allowHalf defaultValue={review.rating}/></Row>
                     <Row>
                         <p>
                             {date.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
