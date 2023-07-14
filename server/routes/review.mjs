@@ -16,19 +16,15 @@ router.get("/", async (req, res) => {
 
 // get single review by id
 router.get("/:id", async (req, res) => {
-  try{
-    const reviewID = req.params.id;
-    Review.findById(reviewID, (err, review) => {
-      if(err) {
-        return res.status(500).json({error: 'Internal server error'});
-      }
-      if(!review) {
-        return res.status(404).json({error: 'Review not found'});
-      }
-      return res.status(200).json(review);
-    });
-  } catch (error){
-    res.status(500).json({error: error.message});
+  const reviewID = req.params.id;
+  try {
+    const review = await Review.findById(reviewID);
+    if (!review) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+    return res.status(200).json(review);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
