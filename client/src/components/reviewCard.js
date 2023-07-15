@@ -1,5 +1,5 @@
 
-import { Row, Rate, Card } from 'antd';
+import { Row, Rate, Card, Tag } from 'antd';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import pp from '../images/pp.jpeg';
 const { Meta } = Card;
@@ -14,7 +14,7 @@ export default function ReviewCard({review, deleteReview}) {
             style={{
                 width: 300,
               }}
-              cover={<img alt="notfound" src={imgSrc}/>}
+              cover={<img style={{height: 300}} alt="notfound" src={imgSrc}/>}
               actions={[
                 <div onClick={deleteReview}><DeleteOutlined/></div>,
                 <EditOutlined />
@@ -24,8 +24,13 @@ export default function ReviewCard({review, deleteReview}) {
                 description={
                 <div>
                     <Row><p><b>{review.movie_name}</b></p></Row>
-                    <Row><p>{review.rec}</p></Row>
-                    <Row><Rate disabled defaultValue={review.rating}/></Row>
+                    <Row>
+                        {(review.rec === 'wouldRec') ?
+                        <Tag color="green">Reviewer Recommends</Tag> : 
+                        <Tag color="red">Reviewer Doesn't Recommend</Tag>
+                        }
+                    </Row>
+                    <Row><Rate disabled allowHalf defaultValue={review.rating}/></Row>
                     <Row>
                         <p>
                             {date.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}

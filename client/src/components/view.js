@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReviewCard from "./reviewCard";
 import { Row, Col } from "antd";
+import { Link } from "react-router-dom";
 
 export default function View() {
     const [reviews, setReviews] = useState([]);
@@ -17,7 +18,12 @@ export default function View() {
             const records = await response.json();
             setReviews(records);
         }
-        getResult();
+        // for now, only make GET request once. 
+        // later, when reviews can be added even while user is on view page:
+        // allow GET request to be made whenever there's a change
+        if(reviews.length === 0) {
+          getResult();
+        }
         
     });
 
@@ -25,9 +31,11 @@ export default function View() {
         return reviews.map((review) => {
 
           return (
-            <Col key={review._id}>
-                <ReviewCard review={review} deleteReview={() => deleteReview(review._id)}/>
-            </Col>
+            <Link key={review._id} to={`/review/${review._id}`}>
+              <Col key={review._id}>
+                  <ReviewCard review={review} deleteReview={() => deleteReview(review._id)}/>
+              </Col>
+            </Link>
           );
         });
     }

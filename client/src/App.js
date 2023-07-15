@@ -5,6 +5,7 @@ import {EditOutlined, EyeOutlined, SearchOutlined} from '@ant-design/icons';
 import Create from "./components/create";
 import View from "./components/view";
 import Discover from "./components/discover";
+import ReviewPage from "./components/reviewPage";
 
 const { Header, Content } = Layout;
 
@@ -47,6 +48,7 @@ export default function App() {
             <Content>
                 <Routes>
                     <Route exact path="/" element={<View/>}/>
+                    <Route path="/review/:id" element={<ReviewPage/>}/>
                     <Route path="/create" element={<Create/>}/>
                     <Route path="/discover" element={<Discover/>}/>
                 </Routes>

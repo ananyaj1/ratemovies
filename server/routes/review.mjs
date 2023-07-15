@@ -14,21 +14,45 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/discover", async (req, res) => {
+  const genres = req.query.genre || []; // Get genres as an array
+  const rating = req.query.rating || 0;
+  const rec = req.query.rec || false;
+
+  const filters = {};
+  /*
+  if (genres && Array.isArray(genres)) {
+    filters.genre = { $in: genres };
+  }
+  */
+
+  if (rating) {
+    filters.rating = { $gte: rating };
+  }
+
+  if (rec) {
+    filters.rec = 'wouldRec';
+  }
+
+  try {
+    const reviews = await Review.find(filters);
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // get single review by id
 router.get("/:id", async (req, res) => {
-  try{
-    const reviewID = req.params.id;
-    Review.findById(reviewID, (err, review) => {
-      if(err) {
-        return res.status(500).json({error: 'Internal server error'});
-      }
-      if(!review) {
-        return res.status(404).json({error: 'Review not found'});
-      }
-      return res.status(200).json(review);
-    });
-  } catch (error){
-    res.status(500).json({error: error.message});
+  const reviewID = req.params.id;
+  try {
+    const review = await Review.findById(reviewID);
+    if (!review) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+    return res.status(200).json(review);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -91,5 +115,7 @@ router.delete("/:id", async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// discover page: get reviews based on query param
 
 export default router;
