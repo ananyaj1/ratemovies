@@ -18,10 +18,9 @@ export default function ReviewPage() {
             }
         
             const rev = await response.json();
-            console.log(rev);
             setReview(rev);
         }
-        
+
         if(!review) {
             getResult();
         }

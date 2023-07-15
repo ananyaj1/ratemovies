@@ -14,6 +14,34 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/discover", async (req, res) => {
+  const genres = req.query.genre || []; // Get genres as an array
+  const rating = req.query.rating || 0;
+  const rec = req.query.rec || false;
+
+  const filters = {};
+  /*
+  if (genres && Array.isArray(genres)) {
+    filters.genre = { $in: genres };
+  }
+  */
+
+  if (rating) {
+    filters.rating = { $gte: rating };
+  }
+
+  if (rec) {
+    filters.rec = 'wouldRec';
+  }
+
+  try {
+    const reviews = await Review.find(filters);
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // get single review by id
 router.get("/:id", async (req, res) => {
   const reviewID = req.params.id;
@@ -87,5 +115,7 @@ router.delete("/:id", async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// discover page: get reviews based on query param
 
 export default router;
