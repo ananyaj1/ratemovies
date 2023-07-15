@@ -120,6 +120,7 @@ export default function Discover() {
     useEffect(() => {
         // construct the URL with the appropriate query parameters
         const url = new URL('http://localhost:5050/review/discover');
+        url.searchParams.append('timestamp', Date.now());
         if (genres && Array.isArray(genres)) {
             genres.forEach((genre) => {
               url.searchParams.append('genre', genre);
@@ -154,7 +155,7 @@ export default function Discover() {
                 <Table style={{width: '100%'}} pagination={false} columns={columns} dataSource={data}/>
             </Row>
             <Row justify={"center"} gutter={[16, 16]}>
-              {(reviews) ? reviewList() : null}
+              {reviewList()}
             </Row>
             
         </div>
