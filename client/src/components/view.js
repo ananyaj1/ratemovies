@@ -51,10 +51,11 @@ export default function View() {
 
     return (
         <div>
-            For Routing
+          <br/>
             <Row justify={"center"} gutter={[16, 16]}>
               {reviewList()}
             </Row>
+          <br/>
         </div>
     );
 }
