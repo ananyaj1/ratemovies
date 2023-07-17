@@ -20,11 +20,11 @@ router.get("/discover", async (req, res) => {
   const rec = req.query.rec || false;
 
   const filters = {};
-  /*
+
   if (genres && Array.isArray(genres)) {
     filters.genre = { $in: genres };
   }
-  */
+
 
   if (rating) {
     filters.rating = { $gte: rating };
@@ -59,7 +59,7 @@ router.get("/:id", async (req, res) => {
 // create new review
 router.post("/", async (req, res) => {
   try {
-    const { title, movie_name, image, rec, rating, date, review_text } = req.body;
+    const { title, movie_name, image, rec, rating, date, genre, review_text } = req.body;
     const newReview = new Review(
       {
         title,
@@ -68,6 +68,7 @@ router.post("/", async (req, res) => {
         rec,
         rating,
         date,
+        genre,
         review_text,
       });
     const savedReview = await newReview.save();

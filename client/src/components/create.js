@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { Image, Select, Result, Row, Button, DatePicker, Rate, Radio, Form, Input, Empty } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import moment from "moment";
+import gen from "../constants/genre";
 
 const {TextArea} = Input;
 export default function Create() {
@@ -90,6 +91,7 @@ export default function Create() {
         .then((response) => {
             form.resetFields();
             setSubmitted(true);
+            setImageUrl("");
             if(!response.ok) {
                 //window.alert(response.statusText);
                 setStatusSubmission('error');
@@ -201,6 +203,16 @@ export default function Create() {
                     </Form.Item>
 
                     <br/>
+
+                    <Form.Item
+                    label="Genre"
+                    name="genre"
+                    rules={[{ required: true, message: 'Please choose a genre for the movie!' }]}>
+                        <Select
+                        placeholder="Choose a genre"
+                        options={gen}
+                        />
+                    </Form.Item>
 
                     <Form.Item
                     label="Movie Review"

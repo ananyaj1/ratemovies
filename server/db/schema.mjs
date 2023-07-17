@@ -29,6 +29,11 @@ const reviewSchema = new Schema({
         type: String,
         required: true,
     },
+    genre: {
+        type: String,
+        enum: ["Comedy", "Mystery", "Thriller", "Action", "Romance"],
+        required: true
+    },
     review_text: {
         type: String,
         required: true,

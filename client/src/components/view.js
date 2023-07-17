@@ -67,7 +67,7 @@ export default function View({setCurrPage}) {
         <div>
           {reviews.length === 0 ? (
             <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Empty />
+            <Empty description="No Reviews just yet!"/>
             </div>
           ) : (
             <div> 
@@ -77,6 +77,7 @@ export default function View({setCurrPage}) {
               </Row>
             </div>
           )}
+          <br/>
         </div>
       );
 }

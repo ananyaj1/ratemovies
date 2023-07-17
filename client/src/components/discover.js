@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import ReviewCard from './reviewCard';
 import { deleteReview } from './view';
+import gen from '../constants/genre';
 export default function Discover({setCurrPage}) {
 
     // params and their state
@@ -20,28 +21,6 @@ export default function Discover({setCurrPage}) {
         setCurrPage("discover");
     });
     // structs and helper functions: 
-    const options = [
-        {
-            value: 'Mystery',
-            label: 'Mystery',
-        },
-        {
-            value: 'Thriller',
-            label: 'Thriller',
-        },
-        {
-            value: 'Comedy',
-            label: 'Comedy',
-        },
-        {
-            value: 'Action',
-            label: 'Action',
-        },
-        {
-            value: 'Romance',
-            label: 'Romance',
-        },
-    ];
     const handleChange = (value) => {
         //console.log(value);
         setGenres(value);
@@ -86,7 +65,7 @@ export default function Discover({setCurrPage}) {
                     }}
                     placeholder="Please select"
                     onChange={handleChange}
-                    options={options}
+                    options={gen}
                 />
             </Space>,
             rating: 

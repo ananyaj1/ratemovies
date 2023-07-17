@@ -8,7 +8,7 @@ import Discover from "./components/discover";
 import ReviewPage from "./components/reviewPage";
 import FindMovies from "./components/movies";
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const items = [
     {
@@ -60,6 +60,8 @@ export default function App() {
                     <Route path="/movies" element={<FindMovies setCurrPage={setCurrPage}/>}/>
                 </Routes>
             </Content>
+            <Footer>
+            </Footer>
         </Layout>
     );
 }

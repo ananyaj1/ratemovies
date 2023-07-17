@@ -23,7 +23,7 @@ export default function ReviewCard({review, deleteReview}) {
                     <Row><p><b>{review.movie_name}</b></p></Row>
                     <Row>
                         <Tag color={(review.rec === 'wouldRec') ? 'green' : 'red'}>
-                            {review.rec}
+                            {(review.rec === 'wouldRec') ? "Reviewer Recommends" : "Reviewer Doesn't Recommend"}
                         </Tag>
                     </Row>
                     <Row><Rate disabled allowHalf defaultValue={review.rating}/></Row>
