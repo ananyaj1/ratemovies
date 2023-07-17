@@ -1,6 +1,5 @@
 
 import { Row, Rate, Card, Tag } from 'antd';
-import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import pp from '../images/pp.jpeg';
 const { Meta } = Card;
 
@@ -11,14 +10,8 @@ export default function ReviewCard({review, deleteReview}) {
         <div>
             <Card
             hoverable
-            style={{
-                width: 300,
-              }}
-              cover={<img style={{height: 300}} alt="notfound" src={imgSrc}/>}
-              actions={[
-                <div onClick={deleteReview}><DeleteOutlined/></div>,
-                <EditOutlined />
-              ]}>
+              cover={<img style={{width: 240, height:400}} alt="notfound" src={imgSrc}/>}
+              >
                 <Meta 
                 title={review.title} 
                 description={

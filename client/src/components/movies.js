@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Space, Button, Card } from "antd";
+import { Space, Button, Card, Tooltip } from "antd";
+import { Link } from "react-router-dom";
 const { Meta } = Card;
+
 
 export default function FindMovies() {
     const [playingmovies, setPlayingMovies] = useState([]);
@@ -32,7 +34,7 @@ export default function FindMovies() {
       if (remainingMovies <= moviesThreshold) {
         getPlayingMovies();
       }
-    }, [currentPlayingPage]);
+    }, [playingmovies, currentPlayingPage]);
 
      // useEffect for Popular Movies
     useEffect(() => {
@@ -127,9 +129,22 @@ export default function FindMovies() {
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             {moviesToDisplay.map((movie, index) => (
               <div key={index} style={{ marginRight: '10px' }}>
-                <Card hoverable style={{ width: 240 }} cover={<img alt="example" src={movie.posterUrl} />}>
-                  <Meta title={movie.title} />
-                </Card>
+                <Link 
+                to={{
+                  pathname: "/create",
+                  search: `?movie=${movie.title}&poster=${movie.posterUrl}`
+                }}>
+                  <Tooltip title="Write Review">
+                  <Card
+                    hoverable
+                    style={{ width: 240 }} // Set the desired width and height of the card
+                    cover={<img alt="example" src={movie.posterUrl} style={{ height: '100%', objectFit: 'cover' }} />} // Adjust the image height and object-fit
+                  >
+                    <Meta title={movie.title} />
+                  </Card>
+                  </Tooltip>
+                
+                </Link>
               </div>
             ))}
           </div>

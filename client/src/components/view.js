@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReviewCard from "./reviewCard";
-import { Row, Col } from "antd";
+import { Row, Col, Space } from "antd";
 import { Link } from "react-router-dom";
 
 export default function View() {
@@ -28,17 +28,28 @@ export default function View() {
     });
 
     function reviewList() {
-        return reviews.map((review) => {
-
-          return (
-            <Link key={review._id} to={`/review/${review._id}`}>
-              <Col key={review._id}>
-                  <ReviewCard review={review} deleteReview={() => deleteReview(review._id)}/>
-              </Col>
-            </Link>
-          );
-        });
-    }
+      const reviewsPerRow = 5; // Number of reviews per row
+    
+      const rows = [];
+      for (let i = 0; i < reviews.length; i += reviewsPerRow) {
+        const rowReviews = reviews.slice(i, i + reviewsPerRow);
+        rows.push(rowReviews);
+      }
+    
+      return rows.map((row, rowIndex) => (
+        <Row key={rowIndex}>
+          <Space size={16}>
+            {row.map((review) => (
+              <Link key={review._id} to={`/review/${review._id}`}>
+                <Col key={review._id}>
+                  <ReviewCard review={review} deleteReview={() => deleteReview(review._id)} />
+                </Col>
+              </Link>
+            ))}
+          </Space>
+        </Row>
+      ));
+    };
 
     async function deleteReview(id) {
         await fetch(`http://localhost:5050/review/${id}`, {

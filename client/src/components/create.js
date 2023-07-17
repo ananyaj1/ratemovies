@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { Result, Row, Button, DatePicker, Rate, Radio, Form, Input, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -11,8 +12,11 @@ export default function Create() {
     const [dateStatus, setDateStatus] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const navigate = useNavigate();
-
-    // functions for image uploading
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const movie = searchParams.get("movie") || "";
+    const posterUrl = searchParams.get("poster") || "";
+    
     const props = {
         onRemove: () => {
             setImageUrl([]);
@@ -25,7 +29,21 @@ export default function Create() {
     // initial values of form
     const initialValues = {
         rec: 'wouldRec', // Set the default value here
+        movie_name: movie,
     };
+    // initial value of upload 
+    const initialFileList = (posterUrl) ? [
+        {
+            uid: 1,
+            name: 'movie_initial.jpg',
+            status: 'done',
+            thumbUrl: posterUrl
+        }
+    ] : [];
+
+    useEffect(() => {
+        setImageUrl(posterUrl);
+    }, [posterUrl]);
 
     // checking if date is past today
     const onDateChange = (date, dateString) => {
@@ -73,7 +91,7 @@ export default function Create() {
         data.image = imageUrl;
 
         //debugging
-        //console.log(data);
+        console.log(data);
         
         fetch("http://localhost:5050/review", {
             method: "POST",
@@ -93,7 +111,12 @@ export default function Create() {
             status="success" 
             title="Successfully wrote review!"
             extra={[
-                <Button type="primary" key="console" onClick={() => setSubmitted(false)}>
+                <Button type="primary" key="console" 
+                onClick={
+                    () => {
+                        setSubmitted(false);
+                        navigate('/create');
+                        }}>
                   Write Another Review
                 </Button>,
                 <Button key="viewmore" onClick={() => navigate('/')}>
@@ -130,7 +153,12 @@ export default function Create() {
                     </Form.Item>
 
                     <Form.Item label="Movie Still" valuePropName="fileList">
-                        <Upload {...props} listType="picture-card" maxCount={1} onChange={uploadChange}>
+                        <Upload {...props} 
+                        listType="picture-card" 
+                        maxCount={1} 
+                        onChange={uploadChange}
+                        defaultFileList={initialFileList}
+                        >
                             <div>
                             <PlusOutlined />
                             <div style={{ marginTop: 8 }}>Upload</div>
