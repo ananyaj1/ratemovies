@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const { Meta } = Card;
 
 
-export default function FindMovies() {
+export default function FindMovies({setCurrPage}) {
     const [playingmovies, setPlayingMovies] = useState([]);
     const [popularMovies, setPopularMovies] = useState([]);
     const [topRatedMovies, setTopRatedMovies] = useState([]);
@@ -29,7 +29,7 @@ export default function FindMovies() {
         setPlayingMovies((prevMovies) => [...prevMovies, ...movs]);
         console.log(playingmovies);
       }
-  
+      setCurrPage("movies");
       const remainingMovies = playingmovies.length - (currentPlayingPage - 1) * moviesPerPage;
       if (remainingMovies <= moviesThreshold) {
         getPlayingMovies();

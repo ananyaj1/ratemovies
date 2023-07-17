@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ReviewCard from "./reviewCard";
-import { Row, Col, Space } from "antd";
+import { Row, Col, Space, Empty } from "antd";
 import { Link } from "react-router-dom";
 
-export default function View() {
+export default function View({setCurrPage}) {
     const [reviews, setReviews] = useState([]);
     useEffect(() => {
         async function getResult() {
@@ -24,7 +24,7 @@ export default function View() {
         if(reviews.length === 0) {
           getResult();
         }
-        
+        setCurrPage("view");
     });
 
     function reviewList() {
@@ -60,13 +60,15 @@ export default function View() {
         setReviews(newRecords);
       }
 
-    return (
-        <div>
-          <br/>
-            <Row justify={"center"} gutter={[16, 16]}>
+      return (
+        <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {reviews.length === 0 ? (
+            <Empty />
+          ) : (
+            <Row justify="center" gutter={[16, 16]}>
               {reviewList()}
             </Row>
-          <br/>
+          )}
         </div>
-    );
+      );
 }

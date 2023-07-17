@@ -2,6 +2,34 @@ import express from 'express';
 import axios from 'axios';
 const router = express.Router();
 
+
+router.get('/search', async (req, res) => {
+  const query = req.query.query;
+
+  try {
+    const options = {
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${process.env.MOVIE_API_TOKEN}`
+      }
+    };
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/search/movie?query=${query}`, options
+    );
+    const results = response.data.results;
+    const suggestions = results.map((movie) => ({
+      id: movie.id,
+      title: movie.title,
+      poster: movie.poster_path
+    }));
+    console.log(suggestions);
+    res.json(suggestions);
+  } catch (error) {
+    console.error('Error fetching movie suggestions:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Get movies now playing in theaters
 router.get('/nowplaying', async (req, res) => {
     try {
@@ -73,6 +101,7 @@ router.get('/toprated', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 
 

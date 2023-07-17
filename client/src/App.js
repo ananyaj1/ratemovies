@@ -53,11 +53,11 @@ export default function App() {
             </Header>
             <Content>
                 <Routes>
-                    <Route exact path="/" element={<View/>}/>
+                    <Route exact path="/" element={<View setCurrPage={setCurrPage}/>}/>
                     <Route path="/review/:id" element={<ReviewPage/>}/>
                     <Route path="/create" element={<Create/>}/>
-                    <Route path="/discover" element={<Discover/>}/>
-                    <Route path="/movies" element={<FindMovies/>}/>
+                    <Route path="/discover" element={<Discover setCurrPage={setCurrPage}/>}/>
+                    <Route path="/movies" element={<FindMovies setCurrPage={setCurrPage}/>}/>
                 </Routes>
             </Content>
         </Layout>

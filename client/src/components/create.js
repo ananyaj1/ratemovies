@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { Result, Row, Button, DatePicker, Rate, Radio, Form, Input, Upload } from 'antd';
+import { Image, Select, Result, Row, Button, DatePicker, Rate, Radio, Form, Input, Empty } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import moment from "moment";
 
@@ -11,12 +11,14 @@ export default function Create() {
     const [imageUrl, setImageUrl] = useState("");
     const [dateStatus, setDateStatus] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    const [movSuggestions, setMovSuggestions] = useState([]);
+    const [movieName, setMovieName] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const movie = searchParams.get("movie") || "";
     const posterUrl = searchParams.get("poster") || "";
-    
+    const baseUrl = 'https://image.tmdb.org/t/p/w500';
     const props = {
         onRemove: () => {
             setImageUrl([]);
@@ -31,19 +33,14 @@ export default function Create() {
         rec: 'wouldRec', // Set the default value here
         movie_name: movie,
     };
-    // initial value of upload 
-    const initialFileList = (posterUrl) ? [
-        {
-            uid: 1,
-            name: 'movie_initial.jpg',
-            status: 'done',
-            thumbUrl: posterUrl
-        }
-    ] : [];
 
     useEffect(() => {
         setImageUrl(posterUrl);
     }, [posterUrl]);
+
+    useEffect(() => {
+        setMovieName(movie);
+    }, [movie]);
 
     // checking if date is past today
     const onDateChange = (date, dateString) => {
@@ -54,42 +51,35 @@ export default function Create() {
         else {
             setDateStatus("");
         }
-    }
-    
-    // change image to appropriate Base64 format for storage
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => {
-              resolve(fileReader.result);
-            };
-            fileReader.onerror = (error) => {
-              reject(error);
-            };
-        });
-    }
-    const uploadChange = async (info) => {
-        // there is a change when an image is uploaded
-        // there is a change when an image is deleted
-        if(info.fileList.length === 0) {
-            setImageUrl("");
-            return;
+    };
+
+    const fetchMovieSuggestions = async (query) => {
+        try {
+          const response = await fetch(`http://localhost:5050/movie/search?query=${query}`);
+          const suggestions = await response.json(); // Parse the response body as JSON
+          setMovSuggestions(suggestions);
+        } catch (error) {
+          console.error('Error fetching movie suggestions:', error);
         }
-        const file = info.file;
-        const base64 = await convertToBase64(file);
-        setImageUrl(base64);
-      };
+    };
+
+    const handleMovieChange = (selectedMovie) => {
+        const selectedMovieObj = movSuggestions.find((movie) => movie.title === selectedMovie);
+        setMovieName(selectedMovie);
+        setImageUrl(baseUrl + selectedMovieObj.poster);
+        //console.log(imageUrl, baseUrl);
+    }
 
     // on submit, send form data to post endpoint & reset the form  
     async function onSubmit (data) {
         // date is a potential blank
+        console.log('am I here>');
         if(!data.date) {
             window.alert('Please choose a proper date.');
             return;
         }
         data.image = imageUrl;
-
+        data.movie_name = movieName;
         //debugging
         console.log(data);
         
@@ -103,7 +93,8 @@ export default function Create() {
         }) 
         form.resetFields();
         setSubmitted(true);
-    }
+    };
+
     return (
         <div className="createReview">
             {(submitted) ? 
@@ -141,29 +132,35 @@ export default function Create() {
                     name="title"
                     rules={[{ required: true, message: 'Review title is required.' }]}
                     >
-                    <Input/>  
+                    <Input maxLength={25}/>  
                     </Form.Item> 
 
-                    <Form.Item
-                        label="Movie Name"
-                        name="movie_name"
-                        rules={[{ required: true, message: 'Movie name is required.' }]}
-                        >
-                        <Input/>
+                    <Form.Item 
+                    label="Movie Name" 
+                    name="movie_name"
+                    rules={[{ required: true, message: 'Review title is required.' }]}>
+                    <Select
+                        showSearch
+                        value={movieName}
+                        placeholder="Search for a movie"
+                        defaultActiveFirstOption={false}
+                        showArrow={false}
+                        filterOption={false}
+                        onSearch={fetchMovieSuggestions}
+                        onChange={handleMovieChange}
+                    >
+                        {movSuggestions.map((movie) => (
+                        <Select.Option key={movie.id} value={movie.title}>
+                            {movie.title}
+                        </Select.Option>
+                        ))}
+                    </Select>
                     </Form.Item>
-
-                    <Form.Item label="Movie Still" valuePropName="fileList">
-                        <Upload {...props} 
-                        listType="picture-card" 
-                        maxCount={1} 
-                        onChange={uploadChange}
-                        defaultFileList={initialFileList}
-                        >
-                            <div>
-                            <PlusOutlined />
-                            <div style={{ marginTop: 8 }}>Upload</div>
-                            </div>
-                        </Upload>
+                    <br/>
+                    <Form.Item label="Movie Still">
+                    {(imageUrl) ?
+                     <Image src={imageUrl} style={{ maxWidth: '100%', maxHeight: '400px' }}/> 
+                     : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Select movie name to see poster!"/>}
                     </Form.Item>
 
                     <Form.Item
@@ -189,7 +186,8 @@ export default function Create() {
                     label="Movie watched on"
                     name="date"
                     validateStatus={dateStatus}
-                    help="Don't choose a date past today!">
+                    help="Don't choose a date past today!"
+                    rules={[{ required: true, message: 'Please choose a date!' }]}>
                         <DatePicker onChange={onDateChange}/>
                     </Form.Item>
 
@@ -198,7 +196,8 @@ export default function Create() {
                     <Form.Item
                     label="Movie Review"
                     name="review_text"
-                    rules={[{ required: true, message: 'Please write a review!' }]}>
+                    rules={[{ required: true, message: 'Please write a review!' }]}
+                    >
                         <TextArea rows={10} />
                     </Form.Item>
 

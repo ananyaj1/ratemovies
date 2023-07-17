@@ -101,6 +101,18 @@ router.patch("/:id", async (req, res) => {
   res.send(result).status(200);
 });
 
+router.delete("/", async (req, res) => {
+  try {
+    const deletedReviews = await Review.deleteMany();
+    if (deletedReviews.deletedCount === 0) {
+      return res.status(404).json({ error: "No reviews found" });
+    }
+    return res.status(200).json({ message: "All reviews deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // delete a review by id
 router.delete("/:id", async (req, res) => {
   const reviewID = req.params.id;
