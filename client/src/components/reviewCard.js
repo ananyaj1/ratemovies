@@ -1,5 +1,5 @@
 
-import { Row, Rate, Card, Tag } from 'antd';
+import { Row, Rate, Card, Tag} from 'antd';
 import pp from '../images/pp.jpeg';
 const { Meta } = Card;
 
@@ -10,7 +10,11 @@ export default function ReviewCard({review, deleteReview}) {
         <div>
             <Card
             hoverable
-              cover={<img style={{width: 240, height:400}} alt="notfound" src={imgSrc}/>}
+            style={{
+                width: 300,
+                height: '100%'
+              }}
+              cover={<img alt="notfound" src={imgSrc} style={{ width: '100%', height: '400px', objectFit: 'cover' }}/>}
               >
                 <Meta 
                 title={review.title} 
@@ -18,10 +22,9 @@ export default function ReviewCard({review, deleteReview}) {
                 <div>
                     <Row><p><b>{review.movie_name}</b></p></Row>
                     <Row>
-                        {(review.rec === 'wouldRec') ?
-                        <Tag color="green">Reviewer Recommends</Tag> : 
-                        <Tag color="red">Reviewer Doesn't Recommend</Tag>
-                        }
+                        <Tag color={(review.rec === 'wouldRec') ? 'green' : 'red'}>
+                            {review.rec}
+                        </Tag>
                     </Row>
                     <Row><Rate disabled allowHalf defaultValue={review.rating}/></Row>
                     <Row>

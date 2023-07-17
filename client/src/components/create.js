@@ -13,6 +13,7 @@ export default function Create() {
     const [submitted, setSubmitted] = useState(false);
     const [movSuggestions, setMovSuggestions] = useState([]);
     const [movieName, setMovieName] = useState("");
+    const [statusSubmission, setStatusSubmission] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -79,8 +80,6 @@ export default function Create() {
             return;
         }
         data.image = imageUrl;
-        data.movie_name = movieName;
-        //debugging
         console.log(data);
         
         fetch("http://localhost:5050/review", {
@@ -89,32 +88,42 @@ export default function Create() {
             body: JSON.stringify(data)
         })
         .then((response) => {
-            if(!response.ok) {window.alert(response.statusText)}
+            form.resetFields();
+            setSubmitted(true);
+            if(!response.ok) {
+                //window.alert(response.statusText);
+                setStatusSubmission('error');
+                return;
+            }
         }) 
-        form.resetFields();
-        setSubmitted(true);
+        setStatusSubmission('success');
     };
 
     return (
         <div className="createReview">
             {(submitted) ? 
-            <Result 
-            status="success" 
-            title="Successfully wrote review!"
-            extra={[
-                <Button type="primary" key="console" 
-                onClick={
-                    () => {
-                        setSubmitted(false);
-                        navigate('/create');
-                        }}>
-                  Write Another Review
-                </Button>,
-                <Button key="viewmore" onClick={() => navigate('/')}>
-                    View Other Reviews
-                </Button>,
-            ]}
-            />
+            <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Result 
+                status={statusSubmission}
+                title={(statusSubmission ==='success') 
+                ? "Successfully wrote review!" 
+                : "There was a problem with your submission."}
+                extra={[
+                    <Button type="primary" key="console" 
+                    onClick={
+                        () => {
+                            setSubmitted(false);
+                            navigate('/create');
+                            }}>
+                    Write Another Review
+                    </Button>,
+                    <Button key="viewmore" onClick={() => navigate('/')}>
+                        View Other Reviews
+                    </Button>,
+                ]}
+                />
+            </div>
+            
             : <div> 
                 <Row justify={"center"}><h3 style={{offset: 12}}>New Review</h3></Row>
                 <Form

@@ -28,7 +28,7 @@ export default function View({setCurrPage}) {
     });
 
     function reviewList() {
-      const reviewsPerRow = 5; // Number of reviews per row
+      const reviewsPerRow = 4; // Number of reviews per row
     
       const rows = [];
       for (let i = 0; i < reviews.length; i += reviewsPerRow) {
@@ -40,11 +40,14 @@ export default function View({setCurrPage}) {
         <Row key={rowIndex}>
           <Space size={16}>
             {row.map((review) => (
-              <Link key={review._id} to={`/review/${review._id}`}>
-                <Col key={review._id}>
-                  <ReviewCard review={review} deleteReview={() => deleteReview(review._id)} />
-                </Col>
-              </Link>
+              <div key={review._id}>
+                <Link to={`/review/${review._id}`}>
+                  <Col key={review._id}>
+                    <ReviewCard review={review} deleteReview={() => deleteReview(review._id)} />
+                  </Col>
+                </Link>
+              </div>
+             
             ))}
           </Space>
         </Row>
@@ -61,13 +64,18 @@ export default function View({setCurrPage}) {
       }
 
       return (
-        <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div>
           {reviews.length === 0 ? (
+            <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Empty />
+            </div>
           ) : (
-            <Row justify="center" gutter={[16, 16]}>
+            <div> 
+              <br/>
+              <Row justify="center" gutter={[16, 16]}>
               {reviewList()}
-            </Row>
+              </Row>
+            </div>
           )}
         </div>
       );

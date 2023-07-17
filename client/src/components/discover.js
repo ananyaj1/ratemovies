@@ -159,6 +159,7 @@ export default function Discover({setCurrPage}) {
             <Row>
                 <Table style={{width: '100%'}} pagination={false} columns={columns} dataSource={data}/>
             </Row>
+            <br/>
             <Row justify={"center"} gutter={[16, 16]}>
               {reviewList()}
             </Row>
