@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import "./loadEnvironment.mjs";
 import reviews from "./routes/review.mjs";
+import movies from "./routes/movie.mjs";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 const PORT = process.env.PORT || 5050;
@@ -28,5 +29,6 @@ mongoose.connect(connectionString, {
   });
 
   app.use("/review", reviews);
+  app.use("/movie", movies);
 
   export default app;

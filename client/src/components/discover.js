@@ -152,6 +152,9 @@ export default function Discover() {
     return(
         <div className='discover'>
             <Row>
+                <h3>Discover Reviews</h3>
+            </Row>
+            <Row>
                 <Table style={{width: '100%'}} pagination={false} columns={columns} dataSource={data}/>
             </Row>
             <Row justify={"center"} gutter={[16, 16]}>
