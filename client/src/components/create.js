@@ -127,7 +127,7 @@ export default function Create() {
             </div>
             
             : <div> 
-                <Row justify={"center"}><h3 style={{offset: 12}}>New Review</h3></Row>
+                <Row justify={"center"}><h2 style={{offset: 12}}>New Review</h2></Row>
                 <Form
                 form={form}
                 name="review"

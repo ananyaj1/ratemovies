@@ -64,20 +64,26 @@ export default function View({setCurrPage}) {
       }
 
       return (
-        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {reviews.length === 0 ? (
-            <div>
-            <Empty description="No Reviews just yet!"/>
-            </div>
-          ) : (
-            <div> 
-              <br/>
-              <Row justify="center" gutter={[16, 16]}>
-              {reviewList()}
-              </Row>
-              <br/>
-            </div>
-          )}
+        <div>
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <h2>View All Reviews</h2>
+          </div>
+          <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {reviews.length === 0 ? (
+              <div>
+              <Empty description="No Reviews just yet!"/>
+              </div>
+            ) : (
+              <div> 
+                <br/>
+                <Row justify="center" gutter={[16, 16]}>
+                {reviewList()}
+                </Row>
+                <br/>
+              </div>
+            )}
+          </div>
         </div>
+        
       );
 }
