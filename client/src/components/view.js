@@ -43,7 +43,7 @@ export default function View({setCurrPage}) {
               <div key={review._id}>
                 <Link to={`/review/${review._id}`}>
                   <Col key={review._id}>
-                    <ReviewCard review={review} deleteReview={() => deleteReview(review._id)} />
+                    <ReviewCard review={review} />
                   </Col>
                 </Link>
               </div>
@@ -53,7 +53,8 @@ export default function View({setCurrPage}) {
         </Row>
       ));
     };
-
+    /*
+    deleteReview={() => deleteReview(review._id)
     async function deleteReview(id) {
         await fetch(`http://localhost:5050/review/${id}`, {
           method: "DELETE"
@@ -62,6 +63,7 @@ export default function View({setCurrPage}) {
         const newRecords = reviews.filter((el) => el._id !== id);
         setReviews(newRecords);
       }
+      */
 
       return (
         <div>

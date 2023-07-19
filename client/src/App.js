@@ -11,7 +11,7 @@ import ReviewPage from "./components/reviewPage";
 import FindMovies from "./components/movies";
 import Feedback from "./components/feedback";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 const items = [
     {
@@ -68,8 +68,8 @@ export default function App() {
                 <Routes>
                     <Route exact path='/' element={<HomePage setCurrPage={setCurrPage}/>}/>
                     <Route path="/view" element={<View setCurrPage={setCurrPage}/>}/>
-                    <Route path="/review/:id" element={<ReviewPage/>}/>
-                    <Route path="/create" element={<Create/>}/>
+                    <Route path="/review/:id" element={<ReviewPage />}/>
+                    <Route path="/create" element={<Create setCurrPage={setCurrPage}/>}/>
                     <Route path="/discover" element={<Discover setCurrPage={setCurrPage}/>}/>
                     <Route path="/movies" element={<FindMovies setCurrPage={setCurrPage}/>}/>
                     <Route path="/feedback" element={<Feedback setCurrPage={setCurrPage}/>}/>

@@ -3,7 +3,7 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import ReviewCard from './reviewCard';
-import { deleteReview } from './view';
+//import { deleteReview } from './view';
 import gen from '../constants/genre';
 export default function Discover({setCurrPage}) {
 
@@ -80,13 +80,15 @@ export default function Discover({setCurrPage}) {
           return (
             <Link key={review._id} to={`/review/${review._id}`}>
               <Col key={review._id}>
-                  <ReviewCard review={review} deleteReview={() => deleteReview(review._id)}/>
+                  <ReviewCard review={review}/>
               </Col>
             </Link>
           );
         });
     }
-
+    /*
+    //deleteReview={() => deleteReview(review._id)}
+    FUNCTION TO DELETE: FUTURE USE
     async function deleteReview(id) {
         await fetch(`http://localhost:5050/review/${id}`, {
           method: "DELETE"
@@ -95,6 +97,7 @@ export default function Discover({setCurrPage}) {
         const newRecords = reviews.filter((el) => el._id !== id);
         setReviews(newRecords);
     };
+    */ 
 
     useEffect(() => {
         // construct the URL with the appropriate query parameters
@@ -119,7 +122,7 @@ export default function Discover({setCurrPage}) {
  
             if (!response.ok) {
             const message = `An error occurred: ${response.statusText}`;
-            //window.alert(message);
+            window.alert(message);
             return;
             }
         

@@ -34,7 +34,7 @@ export default function FindMovies({setCurrPage}) {
       if (remainingMovies <= moviesThreshold) {
         getPlayingMovies();
       }
-    }, [playingmovies, currentPlayingPage]);
+    }, [playingmovies, currentPlayingPage, setCurrPage]);
 
      // useEffect for Popular Movies
     useEffect(() => {
@@ -56,7 +56,7 @@ export default function FindMovies({setCurrPage}) {
         if (remainingMovies <= moviesThreshold) {
           getPopularMovies();
         }
-    }, [currentPopularPage]);
+    }, [popularMovies, currentPopularPage]);
 
      // useEffect for Top rated Movies
      useEffect(() => {
@@ -78,7 +78,7 @@ export default function FindMovies({setCurrPage}) {
         if (remainingMovies <= moviesThreshold) {
           getRatedMovies();
         }
-    }, [currentTopRatedPage]);
+    }, [topRatedMovies, currentTopRatedPage]);
   
     const handleNext = (moviesType) => {
         if (moviesType === 'playing') {

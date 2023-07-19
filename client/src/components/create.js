@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { Image, Select, Result, Row, Button, DatePicker, Rate, Radio, Form, Input, Empty } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import moment from "moment";
 import gen from "../constants/genre";
 
 const {TextArea} = Input;
-export default function Create() {
+export default function Create({setCurrPage}) {
     const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState("");
     const [dateStatus, setDateStatus] = useState("");
@@ -21,15 +20,6 @@ export default function Create() {
     const movie = searchParams.get("movie") || "";
     const posterUrl = searchParams.get("poster") || "";
     const baseUrl = 'https://image.tmdb.org/t/p/w500';
-    const props = {
-        onRemove: () => {
-            setImageUrl([]);
-        },
-        beforeUpload: (file) => {
-            return false;
-        }
-    }
-
     // initial values of form
     const initialValues = {
         rec: 'wouldRec', // Set the default value here
@@ -44,6 +34,9 @@ export default function Create() {
         setMovieName(movie);
     }, [movie]);
 
+    useEffect(() => {
+        setCurrPage('create');
+    });
     // checking if date is past today
     const onDateChange = (date, dateString) => {
         var now = moment();
@@ -119,7 +112,7 @@ export default function Create() {
                             }}>
                     Write Another Review
                     </Button>,
-                    <Button key="viewmore" onClick={() => navigate('/')}>
+                    <Button key="viewmore" onClick={() => navigate('/view')}>
                         View Other Reviews
                     </Button>,
                 ]}

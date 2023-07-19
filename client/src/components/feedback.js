@@ -1,16 +1,33 @@
 import React, {useEffect, useState} from "react";
-import { Row, Col, Input, Button, Form } from "antd";
-const { TextArea } = Input;
+import { Row, Col, Input, Button, Form, notification } from "antd";
 
 export default function Feedback({setCurrPage}) {
     const [form] = Form.useForm();
     const [email, setEmail] = useState("");
     const [feed, setFeed] = useState("");
-
-
+    const [api, contextHolder] = notification.useNotification();
+    const [success, setSuccess] = useState(false);
     useEffect(() => {
         setCurrPage('feedback');
     });
+
+    const openNotification = () => {
+        if(success) {
+            api.success({
+                message: 'Feedback Submitted!',
+                description:
+                  'Your feedback has been submitted. Please check your email inbox for confirmation. Make sure to check spam too!',
+                duration: 0,
+              });
+        }
+        else {
+            api.error({
+                message: 'There was a problem.',
+                description: "We encountered an error while trying to email your feedback. We've been notified about the error, and will fix it soon!",
+                duration: 0,
+            });
+        }
+    };
 
     const handleSubmit = async () => {
         try {
@@ -30,17 +47,19 @@ export default function Feedback({setCurrPage}) {
           form.resetFields();
           setFeed('');
           setEmail('');
-    
-          // Show success message or perform other actions
-          console.log('Form submitted successfully');
+          // Show success message 
+          setSuccess(true);
         } catch (error) {
           console.error('Form submission error:', error);
+          setSuccess(false);
         }
+        openNotification();
     };
     
     return(
         <div style={{ backgroundColor: '#001628', minHeight: '100vh', color: 'white' }}>
         <br/>
+        {contextHolder}
         <Row justify="center" align="middle" gutter={16}>
         <Col span={24}>
           <h1 style={{ textAlign: 'center' }}>Feedback</h1>
