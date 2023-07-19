@@ -22,7 +22,8 @@ router.get('/search', async (req, res) => {
       title: movie.title,
       poster: movie.poster_path
     }));
-    console.log(suggestions);
+    //TESTINGONLY:
+    //console.log(suggestions);
     res.json(suggestions);
   } catch (error) {
     console.error('Error fetching movie suggestions:', error);

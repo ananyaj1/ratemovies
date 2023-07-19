@@ -81,7 +81,7 @@ export default function Create() {
             return;
         }
         data.image = imageUrl;
-        console.log(data);
+        //console.log(data);
         
         fetch("http://localhost:5050/review", {
             method: "POST",
