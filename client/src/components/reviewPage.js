@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {Card, Row, Col, Tag, Image, Rate, Typography, List } from "antd";
+import {Divider, Row, Col, Tag, Image, Rate, Typography, List } from "antd";
 import moment from 'moment';
 const { Title, Text } = Typography;
 
@@ -29,7 +29,7 @@ export default function ReviewPage() {
         console.log(review);
     }
     return(
-       <div>
+       <div style={{ minHeight: '100vh'}}>
         {testing()}
         <Row gutter={[16, 16]}>
             <Col span={24} style={{display: 'flex', justifyContent: 'center'}}>
@@ -37,13 +37,23 @@ export default function ReviewPage() {
             </Col>
         </Row>
         <Row gutter={[16, 16]}>
-            <Col span={6} offset={6} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Col span={8} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Image style={{maxHeight: 400}} src={review.image} alt="Movie Poster" />
             </Col>
+            <div style={{ display: 'flex', alignItems: 'stretch' }}>
+             <Divider type="vertical" style={{ height: '100%' }} />
+            </div>
+            <Col span={8} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <p>{review.review_text}</p>
+                
+            </Col>
+            <div style={{ display: 'flex', alignItems: 'stretch' }}>
+             <Divider type="vertical" style={{ height: '100%' }} />
+            </div>
             <Col span={6} >
                 <List>
                     <List.Item><Text strong> {review.title} </Text> </List.Item>
-                    <List.Item><Text> {moment(review.date).format("MMMM DD, YYYY")} </Text> </List.Item>
+                    <List.Item><Text> Watched on {moment(review.date).format("MMMM DD, YYYY")} </Text> </List.Item>
                     <List.Item><Text> {(review.rec === 'wouldRec') ?
                         <Tag color="green">Reviewer Recommends</Tag> : 
                         <Tag color="red">Reviewer Doesn't Recommend</Tag>
@@ -51,14 +61,6 @@ export default function ReviewPage() {
                     </List.Item>
                     <List.Item> <Rate disabled allowHalf value={review.rating}/> </List.Item>
                 </List>
-            </Col>
-        </Row>
-        <br/>
-        <Row justify={'center'}>
-            <Col span={12}>
-                <Card>
-                    <p>{review.review_text}</p>
-                </Card>
             </Col>
         </Row>
         <br/>

@@ -64,9 +64,9 @@ export default function View({setCurrPage}) {
       }
 
       return (
-        <div>
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {reviews.length === 0 ? (
-            <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div>
             <Empty description="No Reviews just yet!"/>
             </div>
           ) : (
@@ -75,9 +75,9 @@ export default function View({setCurrPage}) {
               <Row justify="center" gutter={[16, 16]}>
               {reviewList()}
               </Row>
+              <br/>
             </div>
           )}
-          <br/>
         </div>
       );
 }

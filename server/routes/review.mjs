@@ -14,17 +14,20 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/discover", async (req, res) => {
-  const genres = req.query.genre || []; // Get genres as an array
+router.get('/discover', async (req, res) => {
+  let genres = req.query.genre || [];
   const rating = req.query.rating || 0;
   const rec = req.query.rec || false;
 
   const filters = {};
 
-  if (genres && Array.isArray(genres)) {
-    filters.genre = { $in: genres };
+  if (!Array.isArray(genres)) {
+    genres = [genres]; // Convert to array if it's a single value
   }
 
+  if (genres.length > 0) {
+    filters.$or = genres.map(genre => ({ genre })); // Match any of the specified genres
+  }
 
   if (rating) {
     filters.rating = { $gte: rating };

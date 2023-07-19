@@ -42,14 +42,14 @@ export default function App() {
         setCurrPage(e.key);
     }
     return(
-        <Layout>
+        <Layout style={{ backgroundColor: '#e6f4ff' }}>
             <Header>
                 <Menu 
                 onClick={switchPage} 
                 selectedKeys={[currPage]} 
                 mode="horizontal" 
                 items={items} 
-                theme="dark"/>
+            theme="dark"/>
             </Header>
             <Content>
                 <Routes>
@@ -60,8 +60,6 @@ export default function App() {
                     <Route path="/movies" element={<FindMovies setCurrPage={setCurrPage}/>}/>
                 </Routes>
             </Content>
-            <Footer>
-            </Footer>
         </Layout>
     );
 }

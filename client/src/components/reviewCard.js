@@ -1,6 +1,7 @@
 
 import { Row, Rate, Card, Tag} from 'antd';
 import pp from '../images/pp.jpeg';
+import colorDict from '../constants/colorDictionary';
 const { Meta } = Card;
 
 export default function ReviewCard({review, deleteReview}) {
@@ -12,7 +13,7 @@ export default function ReviewCard({review, deleteReview}) {
             hoverable
             style={{
                 width: 300,
-                height: '100%'
+                height: '100%',
               }}
               cover={<img alt="notfound" src={imgSrc} style={{ width: '100%', height: '400px', objectFit: 'cover' }}/>}
               >
@@ -31,6 +32,9 @@ export default function ReviewCard({review, deleteReview}) {
                         <p>
                             {date.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </p>
+                    </Row>
+                    <Row>
+                         <Tag color={colorDict[review.genre]}>{review.genre}</Tag>
                     </Row>
                 </div>
                 }

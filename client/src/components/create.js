@@ -102,7 +102,7 @@ export default function Create() {
     };
 
     return (
-        <div className="createReview">
+        <div className="createReview" >
             {(submitted) ? 
             <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Result 

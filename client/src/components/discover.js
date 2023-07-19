@@ -8,7 +8,6 @@ import gen from '../constants/genre';
 export default function Discover({setCurrPage}) {
 
     // params and their state
-    const [recFactor, setRecFactor] = useState(false);
     const[rec, setRec] = useState(false);
     const [genreFactor, setGenreFactor] = useState(false);
     const[genres, setGenres] = useState([]);
@@ -47,8 +46,7 @@ export default function Discover({setCurrPage}) {
             key: '1',
             rec: 
             <Space>
-                <Checkbox onChange={(e) => {setRecFactor(e.target.checked); setRec(false);}}/>
-                <Switch disabled={!recFactor} checked={rec} onChange={() => setRec(!rec)}
+                <Switch checked={rec} onChange={() => setRec(!rec)}
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}/>
             </Space>,
@@ -102,7 +100,7 @@ export default function Discover({setCurrPage}) {
         // construct the URL with the appropriate query parameters
         const url = new URL('http://localhost:5050/review/discover');
         url.searchParams.append('timestamp', Date.now());
-        if (genres && Array.isArray(genres)) {
+        if (genres && Array.isArray(genres) && genreFactor) {
             genres.forEach((genre) => {
               url.searchParams.append('genre', genre);
             });
@@ -110,7 +108,7 @@ export default function Discover({setCurrPage}) {
         if(ratingFactor && rating !== 0) {
             url.searchParams.append('rating', rating);
         }
-        if(recFactor && rec) {
+        if(rec) {
             url.searchParams.append('rec', rec);
         }
         //testing
@@ -131,10 +129,12 @@ export default function Discover({setCurrPage}) {
         getResult();
     });
     return(
-        <div className='discover'>
-            <Row>
-                <h3>Discover Reviews</h3>
-            </Row>
+        <div className='discover' style={{ minHeight: '100vh'}}>
+
+            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+                <h2 style={{ marginBottom: '3px' }}> Discover. </h2>
+                <h5 style={{color: '#595959'}}> Choose your filters. Find something new.</h5>
+            </div>
             <Row>
                 <Table style={{width: '100%'}} pagination={false} columns={columns} dataSource={data}/>
             </Row>
@@ -142,7 +142,7 @@ export default function Discover({setCurrPage}) {
             <Row justify={"center"} gutter={[16, 16]}>
               {reviewList()}
             </Row>
-            
+            <br/>
         </div>
     );
 }
