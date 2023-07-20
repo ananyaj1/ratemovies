@@ -7,7 +7,7 @@ export default function View({setCurrPage}) {
     const [reviews, setReviews] = useState([]);
     useEffect(() => {
         async function getResult() {
-            const response = await fetch(`http://localhost:5050/review/`);
+            const response = await fetch(`${process.env.RATEMOVIES_BACKEND_URL}review/`);
  
             if (!response.ok) {
             const message = `An error occurred: ${response.statusText}`;

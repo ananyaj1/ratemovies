@@ -50,7 +50,7 @@ export default function Create({setCurrPage}) {
 
     const fetchMovieSuggestions = async (query) => {
         try {
-          const response = await fetch(`http://localhost:5050/movie/search?query=${query}`);
+          const response = await fetch(`${process.env.RATEMOVIES_BACKEND_URL}movie/search?query=${query}`);
           const suggestions = await response.json(); // Parse the response body as JSON
           setMovSuggestions(suggestions);
         } catch (error) {
@@ -76,7 +76,7 @@ export default function Create({setCurrPage}) {
         data.image = imageUrl;
         //console.log(data);
         
-        fetch("http://localhost:5050/review", {
+        fetch(`${process.env.RATEMOVIES_BACKEND_URL}review`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)

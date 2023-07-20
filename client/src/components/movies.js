@@ -17,7 +17,7 @@ export default function FindMovies({setCurrPage}) {
     // useEffect for playing Movies
     useEffect(() => {
       async function getPlayingMovies() {
-        const response = await fetch(`http://localhost:5050/movie/nowplaying?page=${currentPlayingPage}`);
+        const response = await fetch(`${process.env.RATEMOVIES_BACKEND_URL}movie/nowplaying?page=${currentPlayingPage}`);
   
         if (!response.ok) {
           const message = `An error occurred: ${response.statusText}`;
@@ -39,7 +39,7 @@ export default function FindMovies({setCurrPage}) {
      // useEffect for Popular Movies
     useEffect(() => {
         async function getPopularMovies() {
-          const response = await fetch(`http://localhost:5050/movie/popular?page=${currentPopularPage}`);
+          const response = await fetch(`${process.env.RATEMOVIES_BACKEND_URL}movie/popular?page=${currentPopularPage}`);
     
           if (!response.ok) {
             const message = `An error occurred: ${response.statusText}`;
@@ -61,7 +61,7 @@ export default function FindMovies({setCurrPage}) {
      // useEffect for Top rated Movies
      useEffect(() => {
         async function getRatedMovies() {
-          const response = await fetch(`http://localhost:5050/movie/toprated?page=${currentTopRatedPage}`);
+          const response = await fetch(`${process.env.RATEMOVIES_BACKEND_URL}movie/toprated?page=${currentTopRatedPage}`);
     
           if (!response.ok) {
             const message = `An error occurred: ${response.statusText}`;

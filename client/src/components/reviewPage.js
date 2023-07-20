@@ -12,7 +12,7 @@ export default function ReviewPage() {
     // Implement alternative later to save on database reads.
     useEffect(() => {
         async function getResult() {
-            const response = await fetch(`http://localhost:5050/review/${id}`);
+            const response = await fetch(`${process.env.RATEMOVIES_BACKEND_URL}review/${id}`);
  
             if (!response.ok) {
             window.alert(response.status);

@@ -35,7 +35,7 @@ export default function Feedback({setCurrPage}) {
           const { feed, email } = values;
     
           // Send the feed and email values to endpoint
-          await fetch('http://localhost:5050/feedback', {
+          await fetch(`${process.env.RATEMOVIES_BACKEND_URL}feedback`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
