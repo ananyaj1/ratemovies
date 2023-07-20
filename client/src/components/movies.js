@@ -17,7 +17,7 @@ export default function FindMovies({setCurrPage}) {
     // useEffect for playing Movies
     useEffect(() => {
       async function getPlayingMovies() {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}movie/nowplaying?page=${currentPlayingPage}`);
+        const response = await fetch(`${process.env.REACT_APP_RATEMOVIES_BACKEND_URL}movie/nowplaying?page=${currentPlayingPage}`);
   
         if (!response.ok) {
           const message = `An error occurred: ${response.statusText}`;
@@ -39,7 +39,7 @@ export default function FindMovies({setCurrPage}) {
      // useEffect for Popular Movies
     useEffect(() => {
         async function getPopularMovies() {
-          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}movie/popular?page=${currentPopularPage}`);
+          const response = await fetch(`${process.env.REACT_APP_RATEMOVIES_BACKEND_URL}movie/popular?page=${currentPopularPage}`);
     
           if (!response.ok) {
             const message = `An error occurred: ${response.statusText}`;
