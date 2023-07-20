@@ -61,7 +61,7 @@ export default function FindMovies({setCurrPage}) {
      // useEffect for Top rated Movies
      useEffect(() => {
         async function getRatedMovies() {
-          const response = await fetch(`${process.env.REACT_APP_RATEMOVIES_BACKEND_URL}movie/toprated?page=${currentTopRatedPage}`);
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}movie/toprated?page=${currentTopRatedPage}`);
     
           if (!response.ok) {
             const message = `An error occurred: ${response.statusText}`;
