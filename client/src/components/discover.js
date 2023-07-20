@@ -101,7 +101,7 @@ export default function Discover({setCurrPage}) {
 
     useEffect(() => {
         // construct the URL with the appropriate query parameters
-        const url = new URL(`${process.env.RATEMOVIES_BACKEND_URL}review/discover`);
+        const url = new URL(`${process.env.REACT_APP_RATEMOVIES_BACKEND_URL}review/discover`);
         url.searchParams.append('timestamp', Date.now());
         if (genres && Array.isArray(genres) && genreFactor) {
             genres.forEach((genre) => {
