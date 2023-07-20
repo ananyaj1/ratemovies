@@ -20,7 +20,7 @@
     },
     {
       "url": "https://github.com/timanovsky/subdir-heroku-buildpack",
-      "subdirectory": "server" 
+      "subdirectory": "server"
     }
   ]
 }
