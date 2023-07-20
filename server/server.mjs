@@ -18,11 +18,15 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
+  // Catch-all route
+  app.get('*', (req, res) => {
+    res.sendFile(join(__dirname, '..', 'client', 'public', 'index.html'));
+  });
 
-mongoose.connect(connectionString, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+  mongoose.connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {
@@ -36,9 +40,5 @@ mongoose.connect(connectionString, {
   app.use("/review", reviews);
   app.use("/movie", movies);
   app.use("/feedback", feedback);
-  // Catch-all route
-  app.get('*', (req, res) => {
-    res.sendFile(join(__dirname, '..', 'client', 'public', 'index.html'));
-  });
 
   export default app;
