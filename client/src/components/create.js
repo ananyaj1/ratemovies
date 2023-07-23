@@ -68,7 +68,6 @@ export default function Create({setCurrPage}) {
     // on submit, send form data to post endpoint & reset the form  
     async function onSubmit (data) {
         // date is a potential blank
-        console.log('am I here>');
         if(!data.date) {
             window.alert('Please choose a proper date.');
             return;

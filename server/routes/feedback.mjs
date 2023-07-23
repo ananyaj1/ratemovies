@@ -1,9 +1,9 @@
 import express from 'express';
-import axios from 'axios';
-import nodemailer from 'nodemailer';
 import sgMail from '@sendgrid/mail';
 const router = express.Router();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 router.post('/', async (req, res) => {
     const { feed, email } = req.body;
   
@@ -37,13 +37,7 @@ router.post('/', async (req, res) => {
       res.status(200).json({ message: 'Feedback submitted successfully' });
     } catch (error) {
       console.error('Error sending feedback email:', error);
-      res.status(500).json({ 
-        error: 'Failed to send feedback email', 
-        key: process.env.SENDGRID_API_KEY,
-        recp: process.env.RECIPIENT_EMAIL,
-        send: process.env.SENDGRID_EMAIL,
-        text: feed,
-      });
+      res.status(500).json({ error: 'Failed to send feedback email' });
     }
   });
 

@@ -6,13 +6,12 @@ export default function Feedback({setCurrPage}) {
     const [email, setEmail] = useState("");
     const [feed, setFeed] = useState("");
     const [api, contextHolder] = notification.useNotification();
-    const [success, setSuccess] = useState(false);
     useEffect(() => {
         setCurrPage('feedback');
     });
 
-    const openNotification = () => {
-        if(success) {
+    const openNotification = (suc) => {
+        if(suc) {
             api.success({
                 message: 'Feedback Submitted!',
                 description:
@@ -48,12 +47,11 @@ export default function Feedback({setCurrPage}) {
           setFeed('');
           setEmail('');
           // Show success message 
-          setSuccess(true);
+          openNotification(true);
         } catch (error) {
           console.error('Form submission error:', error);
-          setSuccess(false);
+          openNotification(false);
         }
-        openNotification();
     };
     
     return(

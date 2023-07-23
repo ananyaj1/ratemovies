@@ -27,7 +27,6 @@ export default function FindMovies({setCurrPage}) {
   
         const movs = await response.json();
         setPlayingMovies((prevMovies) => [...prevMovies, ...movs]);
-        console.log(playingmovies);
       }
       setCurrPage("movies");
       const remainingMovies = playingmovies.length - (currentPlayingPage - 1) * moviesPerPage;
@@ -49,7 +48,6 @@ export default function FindMovies({setCurrPage}) {
     
           const movis = await response.json();
           setPopularMovies((prevMovies) => [...prevMovies, ...movis]);
-          console.log(popularMovies);
         }
     
         const remainingMovies = popularMovies.length - (currentPopularPage - 1) * moviesPerPage;
@@ -71,7 +69,6 @@ export default function FindMovies({setCurrPage}) {
     
           const movis = await response.json();
           setTopRatedMovies((prevMovies) => [...prevMovies, ...movis]);
-          console.log(topRatedMovies);
         }
     
         const remainingMovies = topRatedMovies.length - (currentTopRatedPage - 1) * moviesPerPage;
