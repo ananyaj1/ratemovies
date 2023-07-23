@@ -37,7 +37,13 @@ router.post('/', async (req, res) => {
       res.status(200).json({ message: 'Feedback submitted successfully' });
     } catch (error) {
       console.error('Error sending feedback email:', error);
-      res.status(500).json({ error: 'Failed to send feedback email' });
+      res.status(500).json({ 
+        error: 'Failed to send feedback email', 
+        key: process.env.SENDGRID_API_KEY,
+        recp: process.env.RECIPIENT_EMAIL,
+        send: process.env.SENDGRID_EMAIL,
+        text: feed,
+      });
     }
   });
 
