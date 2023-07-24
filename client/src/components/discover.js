@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import ReviewCard from './reviewCard';
 //import { deleteReview } from './view';
 import gen from '../constants/genre';
-export default function Discover({setCurrPage}) {
+export default function Discover() {
 
     // params and their state
     const[rec, setRec] = useState(false);
@@ -16,9 +16,6 @@ export default function Discover({setCurrPage}) {
 
     // the appropriate reviews
     const[reviews, setReviews] = useState([]);
-    useEffect(() => {
-        setCurrPage("discover");
-    });
     // structs and helper functions: 
     const handleChange = (value) => {
         //console.log(value);

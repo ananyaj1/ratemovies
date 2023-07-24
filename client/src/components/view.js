@@ -3,7 +3,7 @@ import ReviewCard from "./reviewCard";
 import { Row, Col, Space, Empty } from "antd";
 import { Link } from "react-router-dom";
 
-export default function View({setCurrPage}) {
+export default function View() {
     const [reviews, setReviews] = useState([]);
     useEffect(() => {
         async function getResult() {
@@ -24,7 +24,6 @@ export default function View({setCurrPage}) {
         if(reviews.length === 0) {
           getResult();
         }
-        setCurrPage("view");
     });
 
     function reviewList() {

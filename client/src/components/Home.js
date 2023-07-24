@@ -3,12 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Row, Col, Button, Space } from 'antd';
 import {EditOutlined, EyeOutlined, SearchOutlined, VideoCameraOutlined} from '@ant-design/icons';
 import '../css/Home.css';
-export default function HomePage({setCurrPage}) {
-
-    useEffect(() => {
-        setCurrPage("home");
-    });
-
+export default function HomePage() {
     const navigate = useNavigate();
     return(
         <div style={{ backgroundColor: '#001628', minHeight: '100vh', color: 'white' }}>

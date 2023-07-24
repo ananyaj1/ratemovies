@@ -3,6 +3,7 @@ import cors from "cors";
 import "./loadEnvironment.mjs";
 import reviews from "./routes/review.mjs";
 import movies from "./routes/movie.mjs";
+import users from "./routes/user.mjs";
 import feedback from "./routes/feedback.mjs";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
@@ -30,5 +31,5 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
   app.use("/review", reviews);
   app.use("/movie", movies);
   app.use("/feedback", feedback);
-
+  app.use("/user", users);
   export default app;
