@@ -7,7 +7,7 @@ export default function LoginUser({setLoggedIn}) {
     async function onFinish(values)  {
         console.log('Received values of form: ', values);
         
-        fetch(`http://localhost:5050/user/login`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}user/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

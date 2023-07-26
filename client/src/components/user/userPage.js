@@ -8,7 +8,7 @@ export default function UserPage() {
     const [userReviews, setUserReviews] = useState([]);
     useEffect(() => {
         async function getResult() {
-            const response = await fetch(`http://localhost:5050/user/${id}`);
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}user/${id}`);
  
             if (!response.ok) {
             window.alert(response.status);
@@ -23,7 +23,7 @@ export default function UserPage() {
     }, [id]);
     useEffect(() => {
         async function getReviews() {
-            let url = new URL(`http://localhost:5050/review/userpage`);
+            let url = new URL(`${process.env.REACT_APP_BACKEND_URL}review/userpage`);
             url.searchParams.append('userId', id);
             
             const response = await fetch(url.toString());

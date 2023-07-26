@@ -36,7 +36,7 @@ export default function CreateUser() {
             username: values.username,
             profile_pic: newFilename
         };
-        fetch(`http://localhost:5050/user`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}user`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser)

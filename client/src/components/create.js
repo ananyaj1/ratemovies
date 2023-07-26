@@ -85,8 +85,7 @@ export default function Create() {
         //console.log(data);
         const jwtCookie = document.cookie.split('; ').find(row => row.startsWith('jwt_token='));
         const jwtToken = jwtCookie ? jwtCookie.split('=')[1] : null;
-        //${process.env.REACT_APP_BACKEND_URL}
-        fetch(`http://localhost:5050/review`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}review`, {
             method: "POST",
             headers: { 
                 "Content-Type": "application/json",
