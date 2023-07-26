@@ -1,6 +1,6 @@
 import express from 'express';
 import axios from 'axios';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../db/user_schema.mjs';
 const router = express.Router();
