@@ -37,7 +37,7 @@ export default function UserPage() {
             setUserReviews(rev);
         }
         getReviews();
-    }, []);
+    }, [id]);
     function reviewList() {
         return userReviews.map((review) => {
 

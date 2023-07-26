@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Button, Space } from 'antd';
 import {EditOutlined, EyeOutlined, SearchOutlined, VideoCameraOutlined} from '@ant-design/icons';

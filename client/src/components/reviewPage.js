@@ -25,7 +25,7 @@ export default function ReviewPage() {
         }
         getResult();
        
-    }, []);
+    }, [id]);
     function testing() {
         console.log(review);
     }

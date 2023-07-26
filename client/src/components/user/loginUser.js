@@ -16,7 +16,7 @@ export default function LoginUser({setLoggedIn}) {
         })
         .then((response) => response.json())
         .then((data) => {
-            const { message, token } = data;
+            const { token } = data;
             if (token) {
             // Store the token in a session cookie or local storage
             document.cookie = `jwt_token=${token}; path=/; max-age=10800`; // Max age set to 3 hours (3h * 60m * 60s)
@@ -80,7 +80,7 @@ export default function LoginUser({setLoggedIn}) {
                 </Form.Item>
                 {/* ------------FORGOT PASSWORD?------------ */}
                 <Form.Item>
-                    <a className="login-form-forgot" href="">
+                    <a className="login-form-forgot" href="/">
                     Forgot password?
                     </a>
                 </Form.Item>

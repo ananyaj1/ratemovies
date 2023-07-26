@@ -5,7 +5,6 @@ import { Image, Select, Result, Row,
     Button, DatePicker, Rate, Radio, Form, Input, Empty, message } from 'antd';
 import moment from "moment";
 import gen from "../constants/genre";
-import jwt_decode from 'jwt-decode';
 
 const {TextArea} = Input;
 export default function Create() {

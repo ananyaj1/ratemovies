@@ -191,7 +191,7 @@ export default function CreateUser() {
                     <Col key={imageKey} xs={12} sm={8} md={6} lg={4}>
                         <img 
                         src={images[imageKey]} 
-                        alt="Image" 
+                        alt="Notfound" 
                         style={{ width: '100%' }}
                         className={`hoverable-image ${selectedImage === images[imageKey] ? 'selected' : ''}`}
                         onClick={() => setSelectedImage(images[imageKey])}/>
