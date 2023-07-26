@@ -6,7 +6,6 @@ import { useNavigate, Link } from "react-router-dom";
 export default function DeleteUser() {
     const navigate = useNavigate();
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
         navigate('/');
     };
 

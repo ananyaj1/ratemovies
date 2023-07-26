@@ -1,37 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Space, message } from 'antd';
+import { Button, Form, Input, Space, message, Row, Col } from 'antd';
 import { useNavigate, Link } from "react-router-dom";
-
+import imageLoader from './imageLoader';
+import './createUser.css';
 export default function CreateUser() {
     const navigate = useNavigate();
     const [messageApi, contextHolder] = message.useMessage();
-    
+    const [selectedImage, setSelectedImage] = useState("");
+    const images = imageLoader(); // default propics
+    const imagesKeys = Object.keys(images);
+
     async function onFinish (values) {
-        console.log('Received values of form: ', values);
+        if(selectedImage === "") {
+            messageApi.open({
+                type: 'warning',
+                content: "choose a profile pic to create an account!"
+            });
+            return;
+        }
+        const startIndex = selectedImage.lastIndexOf('/') + 1; // Start index after the last slash
+        const endIndex = selectedImage.indexOf('.', startIndex); // End index before the first dot
+        const extractedString = selectedImage.substring(startIndex, endIndex);
+
+        // Desired file format (e.g., 'jpeg')
+        const fileFormat = 'jpeg';
+
+        // Create the new filename by concatenating the extracted string and the file format
+        const newFilename = `${extractedString}.${fileFormat}`;
         let newUser = {
             first_name: values.first_name,
             last_name: values.last_name,
             email: values.email,
             password: values.password,
-            username: values.username
+            username: values.username,
+            profile_pic: newFilename
         };
-        console.log(newUser);
         fetch(`http://localhost:5050/user`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser)
         })
         .then((response) => {
-            if(!response.ok) {
-                window.alert(response.statusText);
-                return;
+            if(response.ok) {
+                messageApi.open({
+                    type: 'success',
+                    content: 'account created!',
+                });
+                navigate('/user/login');
+            } else {
+                messageApi.open({
+                    type: 'error',
+                    content: 'It looks like that email or username is already taken. Choose a different one!'
+                });
             }
+        })
+        .catch((error) => {
+            console.log(error);
             messageApi.open({
-                type: 'success',
-                content: 'account created!',
+                type: 'error',
+                content: 'A problem occured. Make sure your email and username are unique!',
             });
-            navigate('/');
+            return;
         });
     };
 
@@ -155,12 +185,20 @@ export default function CreateUser() {
                 >
                     <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
                 </Form.Item>
-                {/* ------------FORGOT PASSWORD?------------ */}
-                <Form.Item>
-                    <a className="login-form-forgot" href="">
-                    Forgot password?
-                    </a>
-                </Form.Item>
+                {/* ---------------PROFILE PIC-------------- */}
+                <Row gutter={[16, 16]}>
+                    {imagesKeys.map((imageKey) => (
+                    <Col key={imageKey} xs={12} sm={8} md={6} lg={4}>
+                        <img 
+                        src={images[imageKey]} 
+                        alt="Image" 
+                        style={{ width: '100%' }}
+                        className={`hoverable-image ${selectedImage === images[imageKey] ? 'selected' : ''}`}
+                        onClick={() => setSelectedImage(images[imageKey])}/>
+                    </Col>
+                    ))}
+                </Row>
+                <br/>
                 {/* ------------SUBMIT BUTTON----------- */}
                 <Form.Item>
                     <Space>

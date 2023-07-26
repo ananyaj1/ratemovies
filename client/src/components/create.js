@@ -83,12 +83,14 @@ export default function Create() {
         }
         data.image = imageUrl;
         //console.log(data);
-        const token = jwt_decode(document.cookie);
-        fetch(`${process.env.REACT_APP_BACKEND_URL}review`, {
+        const jwtCookie = document.cookie.split('; ').find(row => row.startsWith('jwt_token='));
+        const jwtToken = jwtCookie ? jwtCookie.split('=')[1] : null;
+        //${process.env.REACT_APP_BACKEND_URL}
+        fetch(`http://localhost:5050/review`, {
             method: "POST",
             headers: { 
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${jwtToken}`
             },
             body: JSON.stringify(data)
         })

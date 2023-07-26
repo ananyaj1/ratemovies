@@ -1,6 +1,8 @@
 import express from "express";
 import Review from "../db/schema.mjs";
+import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
+import authMiddleware from './auth.mjs';
 
 const router = express.Router();
 
@@ -45,6 +47,20 @@ router.get('/discover', async (req, res) => {
   }
 });
 
+router.get('/userpage', async (req, res) => {
+  try{
+    let user_id = req.query.userId || "";
+    if(user_id == "") {
+      return res.status(400).json({ error: "userId parameter is required in the query." });
+    }
+    const reviews = await Review.find({ userId: user_id });
+    // Return the reviews
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // get single review by id
 router.get("/:id", async (req, res) => {
   const reviewID = req.params.id;
@@ -60,9 +76,12 @@ router.get("/:id", async (req, res) => {
 });
 
 // create new review
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   try {
-    const { title, movie_name, image, rec, rating, date, genre, review_text } = req.body;
+    const { title, movie_name, image, rec, rating, date, genre, review_text} = req.body;
+    const userId = req.userId;
+    const username = req.username;
+    const user_pic = req.user_pic;
     const newReview = new Review(
       {
         title,
@@ -73,6 +92,9 @@ router.post("/", async (req, res) => {
         date,
         genre,
         review_text,
+        userId, 
+        username, 
+        user_pic
       });
     const savedReview = await newReview.save();
     res.status(201).json(savedReview);
@@ -95,7 +117,8 @@ router.patch("/:id", async (req, res) => {
         rec: req.body.rec,
         rating: req.body.rating,
         date: req.body.date,
-        review_text: req.body.review_text
+        review_text: req.body.review_text,
+        user: mongoose.Types.ObjectId(req.body.user)
     }
   };
 

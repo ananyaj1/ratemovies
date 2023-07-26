@@ -3,7 +3,8 @@ import { NavLink, Routes, Route, useNavigate } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 import {Layout, Menu, Button, Space, Row, Col } from 'antd';
 import {EditOutlined, EyeOutlined, SearchOutlined,
-        VideoCameraOutlined, HomeOutlined, MailOutlined} from '@ant-design/icons';
+        VideoCameraOutlined, HomeOutlined, MailOutlined,
+        UserOutlined} from '@ant-design/icons';
 import Create from "./components/create";
 import View from "./components/view";
 import HomePage from "./components/Home";
@@ -15,6 +16,7 @@ import logo from "./images/rm.png";
 import CreateUser from "./components/user/createUser";
 import LoginUser from "./components/user/loginUser";
 import DeleteUser from "./components/user/deleteUser";
+import UserPage from "./components/user/userPage";
 
 const { Header, Content } = Layout;
 
@@ -27,7 +29,7 @@ export default function App() {
         if(document.cookie) {
             const token = jwt_decode(document.cookie);
             setLoggedIn(!!token);
-            console.log(token);
+            //console.log(token);
         }
         return;
     }, [document.cookie]);
@@ -82,6 +84,13 @@ export default function App() {
             label: (<NavLink className="nav-link" to="/create" onClick={switchPage}> Create </NavLink>),
             key: "create",
             icon: <EditOutlined />,
+        });
+        const token = jwt_decode(document.cookie);
+        const userPage = `/user/${token.userId}`
+        items.push({
+            label: (<NavLink className="nav-link" to={userPage} onClick={switchPage}> My Profile </NavLink>),
+            key: "user",
+            icon: <UserOutlined/>,
         });
     }
 
@@ -138,6 +147,7 @@ export default function App() {
                     <Route path="/user/create" element={<CreateUser/>}/>
                     <Route path="/user/login" element={<LoginUser setLoggedIn={() => setLoggedIn(true)}/>}/>
                     <Route path="/user/delete" element={<DeleteUser/>}/>
+                    <Route path="/user/:id" element={<UserPage/>}/>
                 </Routes>
             </Content>
         </Layout>

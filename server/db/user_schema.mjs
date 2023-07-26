@@ -25,6 +25,10 @@ const userSchema = new Schema({
         unique: true,
         // Add email validation here
     },
+    profile_pic: {
+        type: String,
+        required: true,
+    },
     created_at: {
         type: Date,
         default: Date.now,
