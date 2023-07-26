@@ -32,7 +32,7 @@ export default function App() {
             //console.log(token);
         }
         return;
-    });
+    }, []);
 
     const switchPage = e => {
         // debugging
