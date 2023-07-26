@@ -1,0 +1,9 @@
+.hoverable-image:hover {
+    opacity: 0.8; /* Change the opacity when hovering */
+    /* Or box-shadow effect */
+    /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); */
+}
+
+.selected{
+    border: 2px solid #007bff; 
+}

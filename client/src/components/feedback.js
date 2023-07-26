@@ -1,14 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import { Row, Col, Input, Button, Form, notification } from "antd";
 
-export default function Feedback({setCurrPage}) {
+export default function Feedback() {
     const [form] = Form.useForm();
     const [email, setEmail] = useState("");
     const [feed, setFeed] = useState("");
     const [api, contextHolder] = notification.useNotification();
-    useEffect(() => {
-        setCurrPage('feedback');
-    });
 
     const openNotification = (suc) => {
         if(suc) {

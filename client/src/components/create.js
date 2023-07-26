@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { Image, Select, Result, Row, Button, DatePicker, Rate, Radio, Form, Input, Empty } from 'antd';
+import { Image, Select, Result, Row, 
+    Button, DatePicker, Rate, Radio, Form, Input, Empty, message } from 'antd';
 import moment from "moment";
 import gen from "../constants/genre";
 
 const {TextArea} = Input;
-export default function Create({setCurrPage}) {
+export default function Create() {
     const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState("");
     const [dateStatus, setDateStatus] = useState("");
@@ -14,6 +15,7 @@ export default function Create({setCurrPage}) {
     const [movSuggestions, setMovSuggestions] = useState([]);
     const [movieName, setMovieName] = useState("");
     const [statusSubmission, setStatusSubmission] = useState("");
+    const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -34,9 +36,6 @@ export default function Create({setCurrPage}) {
         setMovieName(movie);
     }, [movie]);
 
-    useEffect(() => {
-        setCurrPage('create');
-    });
     // checking if date is past today
     const onDateChange = (date, dateString) => {
         var now = moment();
@@ -68,16 +67,29 @@ export default function Create({setCurrPage}) {
     // on submit, send form data to post endpoint & reset the form  
     async function onSubmit (data) {
         // date is a potential blank
+        if(!document.cookie) {
+            messageApi.open({
+                type: 'warning',
+                content: 'You are not logged in. Log in to create a review!',
+            });
+            form.resetFields();
+            setImageUrl("");
+            return;
+        }
         if(!data.date) {
             window.alert('Please choose a proper date.');
             return;
         }
         data.image = imageUrl;
         //console.log(data);
-        
+        const jwtCookie = document.cookie.split('; ').find(row => row.startsWith('jwt_token='));
+        const jwtToken = jwtCookie ? jwtCookie.split('=')[1] : null;
         fetch(`${process.env.REACT_APP_BACKEND_URL}review`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwtToken}`
+            },
             body: JSON.stringify(data)
         })
         .then((response) => {
@@ -95,6 +107,7 @@ export default function Create({setCurrPage}) {
 
     return (
         <div className="createReview" >
+            {contextHolder}
             {(submitted) ? 
             <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Result 

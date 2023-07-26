@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import {Divider, Row, Col, Tag, Image, Rate, Typography, List } from "antd";
+import { useParams, Link } from "react-router-dom";
+import {Divider, Row, Col, Tag, Image, Rate, Typography, List, Avatar, Space } from "antd";
 import moment from 'moment';
+import colorDict from '../constants/colorDictionary';
 const { Title, Text } = Typography;
 
 export default function ReviewPage() {
@@ -24,7 +25,7 @@ export default function ReviewPage() {
         }
         getResult();
        
-    });
+    }, [id]);
     function testing() {
         console.log(review);
     }
@@ -59,7 +60,16 @@ export default function ReviewPage() {
                         <Tag color="red">Reviewer Doesn't Recommend</Tag>
                         } </Text> 
                     </List.Item>
+                    <List.Item><Tag color={colorDict[review.genre]}>{review.genre}</Tag></List.Item>
                     <List.Item> <Rate disabled allowHalf value={review.rating}/> </List.Item>
+                    <List.Item>
+                        <Space>
+                            <Avatar src={`/propics/${review.user_pic}`}/>
+                            <Link to={`/user/${review.userId}`}><Text>{review.username}</Text></Link>
+                        </Space>
+                    </List.Item>
+                    <List.Item>
+                    </List.Item>
                 </List>
             </Col>
         </Row>
